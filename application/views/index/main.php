@@ -13,16 +13,16 @@
 		<h1>URL Shortener</h1>
 		<?php echo form_open(''); ?>
 			<div class="input-group">
-				<input id="url-field" type="text" class="txtfield input" name="url" placeholder="Url to be shorten">
+				<input id="url-field" type="text" class="txtfield input" name="url" value="<?php echo set_value('url'); ?>" placeholder="Url to be shorten">
 				<button class="btn btn-submit" type="submit">SHORTEN</button>
 			</div>
 			<h2>Want to choose short url by yourself?</h2>
 			<div class="input-group">
-				<input id="encoded-field" type="text" class="txtfield-short input" name="encoded" placeholder="Short url (optional)">
+				<input id="encoded-field" type="text" class="txtfield-short input" name="encoded" value="<?php echo set_value('encoded'); ?>" placeholder="Short url (optional)">
 			</div>
 			<div id="link">
 				<?php if($message) : ?>
-				    <a href=<?php echo $message ?>><?php echo $message?></a>
+				    <a href=<?php echo base_url().$message ?>><?php echo base_url().$message?></a>
 				<?php endif; ?>
 				<?php echo validation_errors(); ?>
 			</div>

@@ -9,12 +9,6 @@ class Encode {
 		$base  = strlen($index);
 
 		if ($pass_key !== null) {
-			// Although this function's purpose is to just make the
-			// ID short - and not so much secure,
-			// with this patch by Simon Franz (http://blog.snaky.org/)
-			// you can optionally supply a password to make it harder
-			// to calculate the corresponding numeric ID
-
 			for ($n = 0; $n < strlen($index); $n++) {
 				$i[] = substr($index, $n, 1);
 			}
