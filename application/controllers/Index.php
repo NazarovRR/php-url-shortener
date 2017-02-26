@@ -28,7 +28,7 @@ class Index extends CI_Controller {
 		if(sizeof($model) > 0) {
 			redirect($model[0]["full_url"], 'location', 301);
 		} else {
-			redirect(base_url(), 'location', 404);
+			redirect(base_url());
 		}
 	}
 
