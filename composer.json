@@ -11,6 +11,7 @@
 		"source": "https://github.com/bcit-ci/CodeIgniter"
 	},
 	"require": {
+		"ext-bcmath": "*",
 		"php": ">=5.2.4"
 	},
 	"suggest": {
