@@ -33,7 +33,7 @@ class Url_model extends CI_Model {
 
 	public function encode_url()
 	{
-		$model = $this->get_model_by_url($this->input->post('url'));
+		$model = $this->get_model_by_url($this->input->post('full_url'));
 		if(sizeof($model) > 0 && !$this->input->post('encoded')){
 			return $model;
 		} else {
@@ -44,7 +44,7 @@ class Url_model extends CI_Model {
 	public function insert_data()
 	{
 		$data = array(
-			'full_url' => $this->input->post('url')
+			'full_url' => $this->input->post('full_url')
 		);
 		if($this->input->post('encoded')){
 			$data["encoded"] = $this->input->post('encoded');
@@ -66,6 +66,7 @@ class Url_model extends CI_Model {
 
 	public function is_short_unique($short)
 	{
+		if(!$short) return TRUE;
 		$query = $this->db->get_where('urls', array('encoded' => $short));
 		if(sizeof($query->result_array()) > 0){
 			return FALSE;

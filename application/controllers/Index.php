@@ -5,6 +5,7 @@ class Index extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->helper('url');
+		$this->load->helper('security');
 		$this->load->model('url_model','', TRUE);
 	}
 
@@ -13,8 +14,31 @@ class Index extends CI_Controller {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 		$data['message'] = NULL;
-		$this->form_validation->set_rules('url', 'Url to be shorten', 'required|callback_regex_check');
-		$this->form_validation->set_rules('encoded', 'Short url', 'min_length[3]|max_length[10]|alpha_numeric|callback_if_exist');
+		$this->form_validation->set_rules('full_url', 'Url to be shorten', array(
+			'required',
+			array(
+				'valid_url',
+				function ($str){
+					return regex_url_check($str);
+				}
+			),
+			array(
+				'url_exist',
+				function ($str){
+					return webpage_exist($str);
+				}
+			)
+		), array('valid_url' => 'The {field} field is not valid url',
+			'url_exist' => "Such webpage doesn't exist"
+		));
+
+		$this->form_validation->set_rules('encoded', 'Short url', array(
+			'min_length[3]',
+			'max_length[10]',
+			'alpha_numeric',
+			array('if_short_exist', array($this->url_model, 'is_short_unique'))
+		), array('if_short_exist' => 'This short url already taken'));
+
 		if ($this->form_validation->run() === TRUE)
 		{
 			$model = $this->url_model->encode_url();
@@ -23,36 +47,12 @@ class Index extends CI_Controller {
 		$this->load->view('index/main',$data);
 	}
 
-	public function redirect($param){
+	public function redirect_to($param = NULL){
 		$model = $this->url_model->get_model_by_hash($param);
 		if(sizeof($model) > 0) {
 			redirect($model[0]["full_url"], 'location', 301);
 		} else {
 			redirect(base_url());
-		}
-	}
-
-	public function regex_check($str)
-	{
-		if (1 !== preg_match("/^(https?|ftp):\/\/([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+()&%$#=~_-]+))*$/", $str))
-		{
-			$this->form_validation->set_message('regex_check', 'The {field} field is not valid url');
-			return FALSE;
-		}
-		else
-		{
-			return TRUE;
-		}
-	}
-	public function if_exist($str)
-	{
-		if(!$str) return TRUE;
-		$not_exist = $this->url_model->is_short_unique($str);
-		if($not_exist) {
-			return TRUE;
-		} else {
-			$this->form_validation->set_message('if_exist', 'This short url already taken');
-			return FALSE;
 		}
 	}
 }

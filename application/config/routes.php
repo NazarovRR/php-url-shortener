@@ -51,5 +51,5 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 
 $route['migration/latest'] = 'migrate/index';
-$route['(:any)'] = 'index/redirect/$1';
+$route['(:any)'] = 'index/redirect_to/$1';
 $route['default_controller'] = 'index/create';
