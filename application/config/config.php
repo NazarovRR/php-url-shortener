@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = getenv("project_url") or 'localhost:8888';
+$config['base_url'] = 'https://pacific-everglades-90713.herokuapp.com/';
 
 /*
 |--------------------------------------------------------------------------
