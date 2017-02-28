@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => ENV["hostname"] ||'localhost:8889',
-	'username' => ENV["username"] ||'root',
-	'password' => ENV["password"] ||'root',
-	'database' => ENV["database"] ||'shortenerdb',
+	'hostname' => (getenv("hostname")) ? getenv("hostname") : 'localhost:8889',
+	'username' => (getenv("username")) ? getenv("username") : 'root',
+	'password' => (getenv("password")) ? getenv("password") : 'root',
+	'database' => (getenv("database")) ? getenv("database") : 'shortenerdb',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

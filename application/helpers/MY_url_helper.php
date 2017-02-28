@@ -2,6 +2,9 @@
 function webpage_exist($webpage)
 {
 	$headers = @get_headers($webpage);
-	if(strpos($headers[0],'200')===FALSE)return FALSE;
-	return TRUE;
+	if(in_array("HTTP/1.0 200 OK", $headers)) {
+		return TRUE;
+	} else {
+		return FALSE;
+	}
 }
